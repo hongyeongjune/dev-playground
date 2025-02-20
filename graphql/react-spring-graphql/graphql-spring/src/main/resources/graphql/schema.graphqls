@@ -1,0 +1,26 @@
+type DirectorResponse {
+    id: Long!
+    name: String!
+}
+
+type FilmResponse {
+    id: Long!
+    title: String!
+    subtitle: String
+    genre: String!
+    runningTime: Float!
+    description: String!
+    posterImg: String!
+    releaseDate: String!
+    director: DirectorResponse!
+}
+
+type CursorPagedResponse {
+    cursor: Long
+    data: [FilmResponse!]!
+}
+
+type Query {
+    getFilm(filmId: Long!): FilmResponse!
+    getFilms(cursor: Long, limit: Long): CursorPagedResponse!
+}

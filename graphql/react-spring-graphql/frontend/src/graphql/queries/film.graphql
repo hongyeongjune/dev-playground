@@ -1,0 +1,16 @@
+query film($filmId: Long!) {
+    getFilm(filmId: $filmId) {
+        id
+        title
+        subtitle
+        description
+        genre
+        runningTime
+        posterImg
+        releaseDate
+        director {
+            id
+            name
+        }
+    }
+}

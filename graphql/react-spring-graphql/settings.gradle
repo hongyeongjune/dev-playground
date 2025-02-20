@@ -1,0 +1,2 @@
+rootProject.name = "react-spring-graphql"
+include 'graphql-spring'

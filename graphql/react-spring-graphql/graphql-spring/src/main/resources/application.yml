@@ -1,0 +1,34 @@
+spring:
+  graphql:
+    graphiql:
+      # localhost:port/graphiql -> graphql test page
+      enabled: true
+    schema:
+      # graphql query print like jpa show-sql
+      printer:
+        enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url : jdbc:mysql://localhost:3306/graphql?serverTimezone=Asia/Seoul
+    username : "root"
+    password : "00000000"
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    properties:
+      format_sql: true
+    show-sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+server:
+  max-http-header-size: 20MB
+

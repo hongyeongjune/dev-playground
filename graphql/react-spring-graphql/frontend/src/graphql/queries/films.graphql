@@ -1,0 +1,18 @@
+query Films($cursor: Long, $limit: Long) {
+    getFilms(cursor: $cursor, limit: $limit) {
+        cursor
+        data {
+            id
+            title
+            subtitle
+            genre
+            runningTime
+            releaseDate
+            posterImg
+            director {
+                id
+                name
+            }
+        }
+    }
+}
