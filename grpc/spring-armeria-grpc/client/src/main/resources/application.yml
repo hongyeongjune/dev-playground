@@ -1,0 +1,8 @@
+server:
+  shutdown: graceful
+  port: 8081
+
+grpc:
+  endpoint: localhost
+  port: 8443
+  timeout: 3000

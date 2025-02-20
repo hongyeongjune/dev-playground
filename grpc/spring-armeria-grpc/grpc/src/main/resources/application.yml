@@ -1,0 +1,18 @@
+server:
+  shutdown: graceful
+  port: 8081
+spring:
+  # https://github.com/asyncer-io/r2dbc-mysql/wiki/getting-started
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/grpc
+    username: "root"
+    password: "00000000"
+    properties:
+      serverZoneId: Asia/Seoul
+      connectTimeout: PT3S
+    # https://github.com/r2dbc/r2dbc-pool
+    pool:
+      initial-size: 10
+      max-size: 10
+      max-life-time: 30m
+      max-create-connection-time: 3s

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.proto.member";
+
+package com.example.member;
+
+service MemberHandler {
+  rpc createMember(CreateMemberRequest) returns (MemberResponse);
+  rpc getMember(MemberIdRequest) returns (MemberResponse);
+}
+
+message MemberIdRequest {
+  int32 id = 1;
+}
+
+message CreateMemberRequest {
+  string name = 1;
+  int32 createdBy = 2;
+}
+
+message MemberResponse {
+  int32 id = 1;
+  string name = 2;
+  int32 createdBy = 3;
+  google.protobuf.Int32Value modifiedBy = 4;
+  google.protobuf.Timestamp createdDate = 5;
+  google.protobuf.Timestamp modifiedDate = 6;
+}

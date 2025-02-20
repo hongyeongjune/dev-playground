@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.proto.titlegroup";
+
+package com.example.titlegroup;
+
+service TitleGroupHandler {
+  rpc createTitleGroup(CreateTitleGroupRequest) returns (TitleGroupResponse);
+  rpc getTitleGroup(TitleGroupIdRequest) returns (TitleGroupResponse);
+  rpc getTitleGroups(google.protobuf.Empty) returns (TitleGroupListResponse);
+}
+
+message TitleGroupIdRequest {
+  int32 id = 1;
+}
+
+message CreateTitleGroupRequest {
+  string subject = 1;
+  int32 createdBy = 2;
+}
+
+message TitleGroupResponse {
+  int32 id = 1;
+  string subject = 2;
+  int32 createdBy = 5;
+  google.protobuf.Int32Value modifiedBy = 6;
+  google.protobuf.Timestamp createdDate = 7;
+  google.protobuf.Timestamp modifiedDate = 8;
+}
+
+message TitleGroupListResponse {
+  repeated TitleGroupResponse titleGroup = 1;
+}
