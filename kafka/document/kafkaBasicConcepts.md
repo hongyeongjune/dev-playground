@@ -65,7 +65,7 @@
 * 파티션에 메세지가 저장되어 있는 위치를 오프셋(Offset)이라고 부르며, 오프셋은 순차적으로 증가하는 숫자 형태로 되어있다.
 * 하나의 파티션 안에서의 오프셋은 고유한 숫자로, 카프카에서는 오프셋을 통해 메세지의 순서를 보장하고 컨슈머에서는 마지막까지 읽은 위치를 알 수 있다.
 
-![images](http://cloudurable.com/images/kafka-architecture-topic-partition-layout-offsets.png)
+![image](https://github.com/user-attachments/assets/57285c9b-1fba-47ca-970f-e7c82d1c2dff)
 
 ### 고가용성 보장
 * 카프카는 분산 시스템이기 때문에 하나의 서버나 노드가 다운되어도 다른 서버 또는 노드가 장애가 발생한 서버의 역할을 대신해 안정적인 서비스가 가능하다.
