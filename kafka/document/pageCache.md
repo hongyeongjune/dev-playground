@@ -5,7 +5,8 @@
 * 최신 OS 들은 read-ahead와 write-behind 같은 기술을 제공해 순차 읽기/쓰기 작업이 더 빠르게 수행되도록 지원한다. 카프카는 데이터를 메시지 큐 방식으로 저장하는데, 이는 순차 I/O 혜택을 볼 수 있어 빠른 성능을 제공한다.
 * 카프카가 데이터를 디스크에 쓰고 읽으면서도 처리량이 뛰어난 이유 중의 하나는, 카프카의 주요 용도인 메시지 큐의 특성상 데이터를 읽고 쓰는 방식을 순차 접근으로 구성할 수 있기 때문이다.
 
-![images](https://dl.acm.org/cms/attachment/d7e5eb0f-c89d-401e-84bb-c85042b4c072/jacobs3.jpg)
+![image](https://github.com/user-attachments/assets/4b62b55c-ea3e-4d4e-8916-69ca1b30da3e)
+> https://medium.com/sjk5766/kafka-disk-i-o%EA%B0%80-%EB%B9%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0-899c4da5084
 
 ## Page Cache
 
