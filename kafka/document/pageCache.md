@@ -17,7 +17,8 @@
 * 따라서, 카프카는 힙 메모리 내에 객체로 저장하는 대신 바이트 구조로 압축하고 운영체제가 훌륭하게 최적화하고 있는 Page Cahce 를 활용해서 디스크에 저장하는 방식을 도입해서 성능을 높일 수 있었다.
 * Page Cahce 는 애플리케이션 수준이 아니라 운영체제 수준에서 관리되므로, 애플리케이션 서비스 재시작 시에도 별도의 워밍업 없이도 좋은 성능을 낼 수 있다.
 
-![images](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*rjlyW4hhBaJGqVJfKu7dSw.png)
+![image](https://github.com/user-attachments/assets/29e047a2-2a30-47ea-ba8e-a3d0e0d288a6)
+> https://medium.com/sjk5766/kafka-disk-i-o%EA%B0%80-%EB%B9%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0-899c4da5084
 
 ## Zero Copy
 
@@ -25,12 +26,16 @@
 
 ### 일반적인 데이터 전송 흐름
 
-![images](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*wb6XhkM0vKf9YxyEHLlvsw.png)
+![image](https://github.com/user-attachments/assets/de1d6f54-f6ac-4d83-bd49-b9041e581fb5)
+> https://medium.com/sjk5766/kafka-disk-i-o%EA%B0%80-%EB%B9%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0-899c4da5084
 
 * 운영체제는 디스크로부터 데이터를 읽어 커널 영역의 Page Cache 에 저장한다.
 * 애플리케이션은 Page Cache 의 데이터를 사용자 영역으로 읽어온다.
 * 애플리케이션은 커널 영역에 있는 Socket Buffer 로 데이터를 쓴다.
 * 운영체제는 Socket Buffer 에 있는 데이터를 Network Interface Card Buffer 로 복사하고 네트워크를 통해 전송한다.
+
+![image](https://github.com/user-attachments/assets/1259f2fb-d3fa-4aa3-85e4-a4fadd3d527b)
+> https://medium.com/sjk5766/kafka-disk-i-o%EA%B0%80-%EB%B9%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0-899c4da5084
 
 ### Kafka 에서 Zero Copy
 
