@@ -103,7 +103,7 @@
 * 하나의 토픽에 여러개의 파티션이 있을 때, 컨슈머들은 파티션과 매칭되어 메세지를 가져오게된다.
 * 따라서, 컨슈머의 개수가 아무리 많다고 한들 파티션의 개수가 적다면, 대기중인 컨슈머가 많아질 수 있다.
 
-![images](https://www.oreilly.com/api/v2/epubs/9781491936153/files/assets/ktdg_04in05.png)
+![image](https://github.com/user-attachments/assets/822be331-cd5a-49f4-8440-e5d7bcc79456)
 
 ### Partition 과 Consumer 의 관계
 * 여러 개의 컨슈머는 동일한 컨슈머 그룹 Id로 컨슈머 그룹으로 묶을 수 있다.
