@@ -35,7 +35,7 @@
 ### Segment
 * 카프카 프로듀서에 브로커로 전송된 메세지는 토픽의 파티션에 저장되며, 각 메세지들은 세그먼트라는 로그 파일의 형태로 브로커의 로컬 디스크에 저장된다.
 
-![images](https://github.com/hongyeongjune/kafka-playground/assets/39120763/3ef42985-44c5-4e42-8e53-8e1b15e1c7b2)
+![image](https://github.com/user-attachments/assets/9cd5e806-80fd-4614-9563-b27413cb1fe5)
 
 ### Offset
 * 레코드는 저장될 때 오프셋 값이 부여된다. 
