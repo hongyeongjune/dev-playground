@@ -76,7 +76,7 @@
 
 ### Producer 기본 동작
 
-![images](https://jashangoyal.files.wordpress.com/2019/03/producer.png?w=810)
+![image](https://github.com/user-attachments/assets/88c82676-b269-4469-975b-03313e2806ab)
 
 * 각 Record 들은 프로듀서의 send() 메서드를 통해 전달된다.
 * 각 Record 에 파티션을 지정했다면 지정된 파티션으로 가고 지정하지 않았다면 키를 가지고 파티션을 선택해 Record 를 전달하는데, 기본적으로 라운도르빈 방식으로 동작한다.
