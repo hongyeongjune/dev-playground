@@ -1,5 +1,35 @@
 ## Producer
 
+### 데이터 전송 구조
+![Image](https://github.com/user-attachments/assets/8ab27608-7a54-47d3-96dc-a5cb2d9af4b6)
+
+> ProducerRecord -> send 호출 -> Partitioner -> Accumulator 내부에 토픽별로 배치를 만들어 저장 -> sender -> 카프카 클러스터
+
+* 프로듀서는 데이터를 전송할 때, 파티셔너에 의해 전송되는 파티션을 정한다. 
+* 파티셔너에 의해 구분된 레코드는 전송되기 전에 Accumulator에 의해 데이터가 버퍼로 쌓이고 버퍼로 쌓인 데이터는 배치라는 묶음으로 한번에 전송된다.
+
+### acks
+* acks 옵션은 프로듀서가 전송한 데이터가 카프카 클러스터에 얼마나 신뢰성 높게 저장할지 지정할 수 있다.
+* acks=0 : 데이터를 전송하기만 하고 적재되었는지 신경쓰지 않음
+* acks=1 : 리더 파티션에 정상적으로 적재되었는지 확인
+* acks=all 또는 acks=-1 : ISR 그룹에 포함된 모든 파티션에 적재되었는지 확인
+* all 옵션을 사용할 경우, min.insync.replicas 옵션(최소 ISR 그룹 파티션 개수)을 주의해야 한다.
+* 브로커 개수가 3개이고 파티션 복제 개수가 3이라고 했을때, 해당 옵션을 3으로 지정한다면 브로커 한개에 장애가 발생했을때, 해당 옵션을 충족하지 못하므로 전면 장애가 발생한다.(파티션 복제 개수는 브로커 개수보다 크면 의미가 없다.)
+* 따라서 min.insync.replicas 옵션은 파티션 복제본 개수보다 작아야만 한다.
+* producer의 권장 옵션은 브로커 3개라고 가정했을때, acks=all, 파티션 복제 3, min.insync.replicas 2이다.
+
+* 일반적인 메시징 보상 수준을 다음과 같이 나타내기도 한다.
+* At Most Once(최대 1회 전달)
+  * ack = 0
+  * 메시지가 유실될 수 있지만, 중복 메시지가 발행되진 않는다.
+* At Least Once(최소 1회 전달)
+  * ack=all or ack=1
+  * 결과는 적어도 한 번은 전달되며 중복 가능성이 있다.
+* Exactly once(정확히 1회 전달)
+  * acks=all, idempotence=true
+  * 중복없이 정확히 한번 전달된다.
+
+
 ### 파티셔너
 * 프로듀서는 토픽으로 메세지를 보낼 때 해당 토픽의 어느 파티션으로 메세지를 보내야 할지를 결정해야한다.
 * 이때, 파티셔너는 데이터를 어떤 파티션에 넣을지 결정하는 역할을 한다.
@@ -68,9 +98,21 @@
 * https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/
 * 옵션
   * enable.idempotence : 중복 없는 전송을 위한 옵션 (Spring Kafka 3.x 부터 기본값 true)
+    * max.in.flight.requests.per.connection= 1이상 5이하 값 : 한번에 보낼 수 있는 배치 개수
+    * idempotence 사용하려면 5 이하여야하는 조건이 있다.
   * max.in.flight.requests.per.connection : ACK 를 받지 않은 상태에서 하나의 커넥션에서 보낼 수 있는 최대 요청 수 (기본값 5)
   * acks : all 로 설정해야한다.
   * retries : 재시도 횟수, ACK 를 받지 못한 경우 재시도를 해야하므로 0보다 큰 값으로 설정
+  * min.insync.replicas : ISR 그룹 내 복제 최소 개수
+
+![Image](https://github.com/user-attachments/assets/e462ae3e-b297-4806-b809-4b2ad375b6bc)
+
+* producer 는 acks = 1 or all 인 경우, 레코드를 전송하고 브로커에서 응답이 없으면 producer 는 delivery.timeout.ms 시간 동안 재시도를 한다. 
+* 하지만 브로커에는 정상 적재되었으나 네트워크 오류로 ack 를 받지 못한 경우에도 producer 는 재시도를 하게 된다. 
+* 프로듀서는 브로커로 레코드를 전송할 때, producerId 와 sequence(레코드 고유 번호)를 header 에 저장하여 전송하기 때문에 sequence 가 중복되면 레코드를 적재하지 않고 ack 응답만 다시 보낸다.
+* 해당 옵션은 max.in.flight.requests.per.connection 값과 함께 사용되며 해당 값은 1이상 5이하여야만 한다.
+* 예를 들어, connection 값이 3이라고 한다면 전송 배치 개수가 batch1,2,3 으로 묶이는데 2에서 실패한다면 idempotence 옵션에 의해 sequence 가 정렬되지 않게 왔으므로 outOfOrderSequenceException 이 발생하여 2부터 다시 보내게 된다. 
+* 만약 1부터 다시 보내더라도 이미 적재되어있는 경우는 무시한다.
 
 ### 정확히 한 번 전송
 * 중복 없는 전송 방식이 정확히 한 번 전송하는 것은 아니다.
@@ -85,6 +127,12 @@
 * __transaction_state 는 내부 토픽이고 이 역시 토픽이므로 파티션 수와 리플리케이션 팩터 수가 존재하며 브로커의 설정을 통해 변경가능하다.
 * 프로듀서가 직접 __transaction_state 에 기록하는게 아니라 transaction coordinator 에게 알리고, 모든 정보는 transaction coordinator 가 직접 기록한다.
 * transaction coordinator 는 transactional.id 의 해시를 가져와서 이를 사용하여 __transaction_state 토픽의 파티션을 결정합니다. 이곳에 트랜잭션 로그를 저장한다.
+
+* 멱등성 프로듀서의 한계는 동일한 세션 내에서만 정확히 한 번의 전달을 보장한다.
+* 여기서 '동일한 세션'이란, PID(Producer ID)의 생명주기를 의미한다.
+* 만약 멱등성 프로듀서로 작동하는 프로듀서 애플리케이션에 문제가 발생해 종료되고 다시 시작하면 PID가 된다.
+* 동일한 데이터를 전송하더라도, PID가 바뀌면 브로커는 다른 프로듀서 애플리케이션이 다른 데이터를 보냈다고 판단한다.
+* 따라서 멱등성 프로듀서는 장애가 발생하지 않는 상황에서만 데이터를 정확히 한 번 적재하는 것을 보장한다는 점을 명심해야 한다.
 
 #### 초기화
 * 트랜잭션을 초기화할 때 트랜잭션 코디네이터는 PID(Producer ID)와 TID(Transaction ID)를 매핑하고, 트랜잭션 로그에 기록한다.
