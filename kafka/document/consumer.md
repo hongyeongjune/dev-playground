@@ -19,7 +19,7 @@
   * 컨슈머가 제외되는 상황 
     * 종료되고 코디네이터가 이를 인지하지 못해도 heartbeat 간격 수신을 받지 못하면 종료된 것으로 판단
 
-![images](https://github.com/user-attachments/assets/96c05962-c441-4594-9338-7589f16e9784)
+![image](https://github.com/user-attachments/assets/4659a9da-07cc-4f1e-8c58-401181c61425)
 
 1. 컨슈머가 추가/종료된 경우 기존 컨슈머들은 그룹에 다시 조인하기 위해 코디네이터에 조인 요청을 보낸다. 
 2. 코디네이터는 모든 컨슈머로부터 조인 요청 을 받으면 컨슈머 그룹 리더를 선정한다.
@@ -40,7 +40,7 @@
   * 그리고 KafkaConsumer 1.1.0 기준으로 rebalanceTimeout은 max.poll.interval.ms 값으로 세팅된다.
   * 따라서 파티션 리밸런싱이 일어난 이후에 max.poll.interval.ms 시간내에 조인 요청을 보내지 못한다면, 해당 컨슈머는 그룹에서 제외된다.
 
-![images](https://github.com/user-attachments/assets/e2c5d4ec-790f-4621-814c-cf7f43c26924)
+![image](https://github.com/user-attachments/assets/423512be-5667-403b-af53-14c86b94e914)
 
 * eager나 cooperative 모드 둘다 리밸런싱 되는 경우, 전체/일부 컨슈머가 조인 요청을 보내고 파티션을 할당받기 까지 소비가 중단된다. 
 * 이때 먼저 poll을 한 컨슈머가 있고 레코드를 처리하고 있는 컨슈머가 처리가 조금 오래걸려서 처리 이후에 poll을 한 경우, 미리 poll을 요청한 컨슈머는 그만큼 기다리게 된다.
@@ -56,7 +56,7 @@
 * 하지만 실제로 max.poll.records 를 작게 설정하더라고 성능에 큰 영향을 주지는 않는다.
 * 그 이유는 컨슈머가 레코드를 가져올 때 Fetcher 라는 클래스를 사용하기 때문이다.
 
-![Image](https://github.com/user-attachments/assets/acd2cc9e-2e38-4cf5-9d41-5feb19611d25)
+![image](https://github.com/user-attachments/assets/ba75f193-b3ef-48dc-9495-07a4704592b2)
 
 * 컨슈머는 poll 메소드가 호출되면, Fetcher의 fetchedRecords 메소드를 호출한다. 
 * fetchedRecords 메소드는 최대 max.poll.records 만큼의 레코드를 리턴한다.
