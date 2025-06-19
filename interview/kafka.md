@@ -221,6 +221,8 @@ Zero Copy
   * 또한 1단계에서는 데이터를 읽을 때마다 메모리로 이동하여 사용자 공간으로 복사하는 대신 페이지 캐시에 정확히 한 번만 복사하여 필요할 때 재사용합니다.
   * ![image](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*HxW0LkeGrKEvV3ID.png)
 
+> https://blog.det.life/apache-kafka-important-designs-2a0e6aa6c5bf
+
 </details>
 
 ### 배치 전송과 압축 전송
