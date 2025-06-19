@@ -153,7 +153,7 @@
 
 </details>
 
-### Page Cache 란?
+### 카프카의 성능은 왜 빠를까? 순차 I/O, Page Cache, Zero Copy 기법에 대해서 설명하시오
 
 <details>
    <summary> 예비 답안 보기 (👈 Click)</summary>
@@ -186,7 +186,9 @@
 페이지 캐시  
 * 카프카는 페이지 캐시를 이용한다.
 * 카프카는 JVM 위에서 동작한다.
-* 
+* JVM Heap에 데이터를 많이 올리면 Garbage Collection(GC) 부담이 커지고, Stop-the-world가 발생할 수 있다. 
+* 특히 Kafka는 지연(latency) 민감한 시스템인데, GC로 인한 지연은 심각한 문제가 돼. 
+* 반면 Page Cache는 GC와 무관하게 OS 차원에서 관리되므로 안정적이야.
 * 페이지 캐시는 운영체제가 디스크 I/O 성능을 높이기 위해, 파일의 내용을 메모리(RAM)에 저장해두는 캐시 영역이다.
 * 읽기 시
   * 디스크에 읽기 요청 → Page Cache에 있으면 즉시 응답 (cache hit)
